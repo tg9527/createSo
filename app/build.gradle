@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.lt.so"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //设置打包进apk的so库
+//        ndk {
+//            abiFilters "armeabi"
+//        }
+
+    }
+
+    sourceSets {
+        main() {
+            jniLibs.srcDirs = ['src/main/libs']
+            jni.srcDirs = []  //This prevents the auto generation of Android.mk
+        }
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //解决Error: Your project contains C++ files but it is not using a supported native build system.
+    //参考:https://stackoverflow.com/questions/41791429/error-your-project-contains-c-files-but-it-is-not-using-a-supported-native-bu/42364491
+//    externalNativeBuild {
+//        ndkBuild {
+//            path 'src/main/jni/Android.mk'
+//        }
+//    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    testImplementation 'junit:junit:4.12'
+}
